@@ -1,0 +1,26 @@
+@import '../../variables.scss';
+
+.container {
+  display: flex;
+  .icons {
+    display: flex;
+    align-items: center;
+  }
+  img {
+    padding-right: 7px;
+    padding-left: 7px;
+  }
+  .disabled {
+    opacity: 0.3px;
+  }
+}
+
+.containermulti {
+  margin-bottom: 20px;
+}
+.container:first-child {
+  margin-top: unset;
+}
+.container:last-child {
+  margin-bottom: unset;
+}

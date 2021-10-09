@@ -1,0 +1,156 @@
+@import "../../variables.scss";
+
+.tableContainer {
+  overflow: auto;
+  display: grid;
+  grid-template-columns: auto;
+  width: 100%;
+  position: relative;
+
+  .table {
+    font-size: 12px;
+    font-family: SFProTextRegular, "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+
+    thead {
+      background-color: $thead-bg;
+      height: 20px;
+    }
+
+    td {
+      white-space: nowrap;
+      padding: 16px;
+      vertical-align: middle;
+      .tagged {
+        width: 20px;
+        margin-right: 10px;
+        // transform: rotateZ(-90deg);
+      }
+    }
+
+    .description {
+      width: 30%;
+      white-space: normal;
+    }
+    .textButton {
+      display: flex;
+      .count {
+        margin-right: 5px;
+      }
+    }
+
+    tbody {
+      color: $table-text;
+      background-color: $tbody-bg;
+      .hr {
+        border-bottom: 1px solid $hr;
+      }
+      .connected {
+        border-top: 3px solid $green;
+        border-bottom: 3px solid $green;
+        background-color: $gray;
+      }
+      .stopped {
+        // border-width: 120px;
+        border-top: 3px solid $red;
+        border-bottom: 3px solid $red;
+      }
+      .pointer:hover {
+        cursor: pointer;
+        background-color: $gray;
+      }
+    }
+
+    tr {
+      color: $table-text;
+      vertical-align: top;
+    }
+   
+    th {
+      height: 32px;
+      div {
+        text-align: left;
+        padding-left: 16px;
+        padding-right: 16px;
+        font-weight: unset;
+        color: $table-text;
+        margin: 4px 0;
+        white-space: nowrap;
+        height: 24px;
+        border-left: 1px solid $th-div-border;
+        line-height: 24px;
+        [type="checkbox"] {
+          margin-left: 10px;
+        }
+      }
+    }
+
+    th:first-child {
+      border-top-left-radius: 3px;
+    }
+
+    th:last-child {
+      border-top-right-radius: 3px;
+    }
+
+    th:first-child > div {
+      border-left: none;
+    }
+
+    .hyperlinkcrt {
+      cursor: pointer;
+      color: #4e8fc9;
+    }
+
+    .roosterInfo {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .tableFooter {
+    display: flex;
+    padding: 6px 0;
+    height: 20px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    background-color: $table-footer-bg;
+    align-items: center;
+
+    img {
+      position: relative;
+      top: 2px;
+      height: 16px;
+    }
+
+    .currentPage {
+      margin-left: 20px;
+      font-size: 12px;
+      color: $table-text;
+    }
+
+    .pageRange {
+      margin-left: auto;
+      font-size: 12px;
+      color: $table-text;
+    }
+
+    .paginationButton {
+      margin: 0 20px 0 10px;
+      img {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .noRecords {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 6px 0;
+    height: 16px;
+    font-size: 12px;
+    background-color: $norecords-bg;
+  }
+}

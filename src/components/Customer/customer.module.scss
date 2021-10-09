@@ -1,0 +1,55 @@
+@import "../../variables.scss";
+
+.container {
+  border-radius: 5px;
+  background-color: $bgColor;
+  padding: 10px;
+  color: $black;
+
+  .header {
+    padding: 20px;
+    background-color: darksalmon;
+  }
+
+  .bodyView {
+    padding: 20px;
+    h1 {
+      color: $black;
+      margin-bottom: 20px;
+    }
+
+    label {
+      color: $black;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid $white;
+      border-radius: 4px;
+      box-sizing: border-box;
+      color: $black;
+    }
+    .addButton {
+      margin-top: 20px;
+      border-radius: 2px;
+      padding: 5px;
+      background-color: $buttonbgColor;
+    }
+  }
+
+  .footer {
+    .errorMsg span {
+      color: $red;
+      font-size: 12px;
+    }
+  }
+}
+
+// div {
+//   border-radius: 5px;
+//   background-color: $bgColor;
+//   padding: 20px;
+// }

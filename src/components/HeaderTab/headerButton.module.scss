@@ -1,0 +1,64 @@
+@import '../../variables.scss';
+
+.collabOption {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  padding-top: 10px;
+  white-space: nowrap;
+  /* width: 70vw; */
+
+  .collabButton {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 15px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: -0.08px;
+    padding: 0px 20px;
+    height: 25px;
+    background-color: $buttonbgColor;
+    color: $white;
+  }
+
+  .collabButton:first-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+
+  .collabButton:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+
+  .collabButton:hover {
+    background-color: $pink;
+    color: $white;
+    cursor: pointer;
+  }
+
+  .firstButton {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+
+  .middleButtonMyRequests,
+  .middleButtonOngoingCollab,
+  .middleButtonMyTeam {
+    border-right: 0.1px solid $blue;
+    border-left: 0.1px solid $blue;
+  }
+
+  .lastButton {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+
+  .active {
+    background-color: $pink;
+    color: $white;
+  }
+}
