@@ -2,9 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as s from "./customer.module.scss";
 import * as _ from "lodash";
-import HeaderTab from "../HeaderTab";
-import { getAllCustomers, addCustomerInfo } from "../../actions/customer";
-import Table from "../Table";
+import HeaderTab from "../../components/HeaderTab";
+import {
+  getAllCustomers,
+  addCustomerInfo,
+  UpdateCustomerInfo,
+} from "../../actions/customer";
+import Table from "../../components/Table";
 import { customerTableList } from "../../utils/tableViewConfig";
 import editIcon from "../../assets/svgs/editIcon.svg";
 
@@ -22,6 +26,7 @@ class Customer extends Component {
       activeScreen: "view",
     };
     this.setActiveScreen = this.setActiveScreen.bind(this);
+    this.getIndividualCustomer = this.getIndividualCustomer.bind(this);
   }
 
   componentDidMount() {
@@ -77,10 +82,10 @@ class Customer extends Component {
     });
   }
 
-  addCustomer() {
+  addCustomer(id = "") {
     const { cname, address, phone, pobox, vat, region } = this.state;
-    const { addCustomerInfo } = this.props;
-    
+    const { addCustomerInfo, UpdateCustomerInfo } = this.props;
+
     let obj = {
       cname: cname,
       address: address,
@@ -90,8 +95,15 @@ class Customer extends Component {
       region: region,
     };
 
-    addCustomerInfo(JSON.stringify(obj));
+    if (id === "") {
+      addCustomerInfo(JSON.stringify(obj));
+    } else {
+      UpdateCustomerInfo(JSON.stringify(obj), id);
+    }
     this.setActiveScreen("view");
+    this.setState({
+      errorMsg: "",
+    });
   }
 
   refreshScreen = () => {
@@ -107,6 +119,26 @@ class Customer extends Component {
       activeScreen: screen,
     });
   };
+
+  async getIndividualCustomer(item) {
+    const { getAllCustomers } = this.props;
+
+    await getAllCustomers(item._id);
+
+    const {
+      customer: { oneCustomer },
+    } = this.props;
+    const { cname, address, phone, pobox, vat, region } = oneCustomer;
+
+    this.setState({
+      cname: cname,
+      address: address,
+      phone: phone,
+      pobox: pobox,
+      vat: vat,
+      region: region,
+    });
+  }
 
   render() {
     const { errorMsg, activeScreen } = this.state;
@@ -194,6 +226,94 @@ class Customer extends Component {
       );
     };
 
+    const EditCustomer = () => {
+      const { cname, address, phone, pobox, vat, region } = this.state;
+      const {
+        customer: { oneCustomer },
+      } = this.props;
+      const { _id } = oneCustomer;
+
+      return (
+        <>
+          <h1>Edit Customer Details</h1>
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            placeholder="Customer name"
+            value={cname}
+            onChange={(e) => {
+              this.getCompanyname(e);
+            }}
+          />
+
+          <label htmlFor="address">Address</label>
+          <input
+            type="text"
+            id="address"
+            placeholder="Address"
+            onChange={(e) => {
+              this.getAddress(e);
+            }}
+            value={address}
+          />
+
+          <label htmlFor="address">Region</label>
+          <input
+            type="text"
+            id="region"
+            placeholder="Region"
+            onChange={(e) => {
+              this.getRegion(e);
+            }}
+            value={region}
+          />
+
+          <label htmlFor="address">Phone</label>
+          <input
+            type="text"
+            id="phone"
+            placeholder="Phone"
+            onChange={(e) => {
+              this.getPhone(e);
+            }}
+            value={phone}
+          />
+
+          <label htmlFor="address">P O Box</label>
+          <input
+            type="text"
+            id="pobox"
+            placeholder="P O Box"
+            onChange={(e) => {
+              this.getPobox(e);
+            }}
+            value={pobox}
+          />
+
+          <label htmlFor="address">VAT</label>
+          <input
+            type="text"
+            id="vat"
+            placeholder="VAT"
+            onChange={(e) => {
+              this.getVAT(e);
+            }}
+            value={vat}
+          />
+
+          <button
+            className={s.addButton}
+            onClick={() => {
+              this.addCustomer(_id);
+            }}
+          >
+            Update Customer
+          </button>
+        </>
+      );
+    };
+
     const ViewCustomer = () => {
       const {
         customer: { customerList },
@@ -207,7 +327,10 @@ class Customer extends Component {
           src: editIcon,
           message: "",
           handler: () => {
-            console.log("item: ", item);
+            this.getIndividualCustomer(item);
+            this.setState({
+              activeScreen: "edit",
+            });
           },
         });
         let Obj = {
@@ -249,6 +372,7 @@ class Customer extends Component {
           </div>
 
           <div className={s.bodyView}>
+            {activeScreen === "edit" && <>{EditCustomer()}</>}
             {activeScreen === "add" && <>{AddCustomer()}</>}
             {activeScreen === "view" && <>{ViewCustomer()}</>}
           </div>
@@ -278,5 +402,6 @@ const customerHeaderButtonArray = [
 const mapActionsToProps = {
   getAllCustomers,
   addCustomerInfo,
+  UpdateCustomerInfo,
 };
 export default connect((state) => state, mapActionsToProps)(Customer);

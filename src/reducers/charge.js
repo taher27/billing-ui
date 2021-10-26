@@ -1,7 +1,8 @@
-import { SET_CHARGES_LIST } from "../constants/charge";
+import { SET_CHARGES_LIST, SET_ONE_CHARGE } from "../constants/charge";
 
 const initialState = {
   chargeList: [],
+  oneCharge: [],
 };
 
 export default (state = initialState, action) => {
@@ -12,6 +13,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         chargeList: payload,
+      };
+
+    case SET_ONE_CHARGE:
+      return {
+        ...state,
+        oneCharge: payload,
       };
 
     default:

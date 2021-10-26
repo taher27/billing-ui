@@ -2,10 +2,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as s from "./charge.module.scss";
 import * as _ from "lodash";
-import HeaderTab from "../HeaderTab";
-import { addChargeInfo, getAllCharges } from "../../actions/charge";
+import HeaderTab from "../../components/HeaderTab";
+import {
+  addChargeInfo,
+  getAllCharges,
+  updateChargeInfo,
+} from "../../actions/charge";
 
-import Table from "../Table";
+import Table from "../../components/Table";
 import { chargeTableList } from "../../utils/tableViewConfig";
 import editIcon from "../../assets/svgs/editIcon.svg";
 
@@ -32,16 +36,23 @@ class Charge extends Component {
     });
   }
 
-  addCharge() {
+  addCharge(id = "") {
     const { name } = this.state;
-    const { addChargeInfo } = this.props;
+    const { addChargeInfo, updateChargeInfo } = this.props;
 
     let obj = {
       name: name,
     };
 
-    addChargeInfo(JSON.stringify(obj));
+    if (id === "") {
+      addChargeInfo(JSON.stringify(obj));
+    } else {
+      updateChargeInfo(JSON.stringify(obj), id);
+    }
     this.setActiveScreen("view");
+    this.setState({
+      name: "",
+    });
   }
 
   refreshScreen = () => {
@@ -57,6 +68,21 @@ class Charge extends Component {
       activeScreen: screen,
     });
   };
+
+  async getIndividualCharge(item) {
+    const { getAllCharges } = this.props;
+
+    await getAllCharges(item._id);
+
+    const {
+      charge: { oneCharge },
+    } = this.props;
+    const { name } = oneCharge;
+
+    this.setState({
+      name: name,
+    });
+  }
 
   render() {
     const { errorMsg, activeScreen } = this.state;
@@ -89,6 +115,38 @@ class Charge extends Component {
       );
     };
 
+    const EditCharge = () => {
+      const { name } = this.state;
+      const {
+        charge: { oneCharge },
+      } = this.props;
+      const { _id } = oneCharge;
+      return (
+        <>
+          <h1>Edit Charge</h1>
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            placeholder="Charge name"
+            value={name}
+            onChange={(e) => {
+              this.getChargeName(e);
+            }}
+          />
+
+          <button
+            className={s.addButton}
+            onClick={() => {
+              this.addCharge(_id);
+            }}
+          >
+            Update Charge
+          </button>
+        </>
+      );
+    };
+
     const ViewCharge = () => {
       const {
         charge: { chargeList },
@@ -102,7 +160,10 @@ class Charge extends Component {
           src: editIcon,
           message: "",
           handler: () => {
-            console.log("item: ", item);
+            this.getIndividualCharge(item);
+            this.setState({
+              activeScreen: "edit",
+            });
           },
         });
         let Obj = {
@@ -140,6 +201,7 @@ class Charge extends Component {
           </div>
 
           <div className={s.bodyView}>
+            {activeScreen === "edit" && <>{EditCharge()}</>}
             {activeScreen === "add" && <>{AddCharge()}</>}
             {activeScreen === "view" && <>{ViewCharge()}</>}
           </div>
@@ -169,5 +231,6 @@ const chargeHeaderButtonArray = [
 const mapActionsToProps = {
   getAllCharges,
   addChargeInfo,
+  updateChargeInfo,
 };
 export default connect((state) => state, mapActionsToProps)(Charge);
